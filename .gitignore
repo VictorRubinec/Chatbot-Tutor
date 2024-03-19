@@ -1,7 +1,11 @@
 /arquivos
 /templates
 
-key.json
+
+gctts.json
+openai.json
 record.wav
 app.py
+*.mp3
+*.wav
 ```
