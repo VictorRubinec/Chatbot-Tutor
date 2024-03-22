@@ -3,7 +3,11 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
+
+require('dotenv').config();
+
+console.log(process.env.BASE_PATH);
 
 var app = express();
 
@@ -16,12 +20,12 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 
-const BASE_PATH = process.env.BASE_PATH || "/"; // Caminho base configurável
+const base_path = process.env.BASE_PATH || "/"; 
 
-app.use(BASE_PATH, indexRouter);
-app.use(`${BASE_PATH}functions`, functionsRouter);
+app.use(base_path, indexRouter);
+app.use(`${base_path}functions`, functionsRouter); 
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    console.log(`http://localhost:${PORT}`);
+    console.log(`App is available at: https://chatbot-r91ni7a0n-victorrubinecs-projects.vercel.app`);
 });
