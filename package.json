@@ -1,8 +1,8 @@
 {
-  "name": "openai-chatbot-server",
-  "version": "1.0.0",
-  "description": "Server-side application for handling OpenAI API requests",
-  "main": "server.js",
+  "name": "Chatbot Tutor",
+  "version": "0.5.1",
+  "description": "Um chatbot tutor baseado em OpenAI.",
+  "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon --exec node app.js"
@@ -12,7 +12,7 @@
     "chatbot",
     "server"
   ],
-  "author": "Seu Nome",
+  "author": "Victor Zanin Rubinec",
   "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
