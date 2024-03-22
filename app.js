@@ -16,8 +16,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use(cors());
 
-app.use("/", indexRouter);
-app.use("/functions", functionsRouter);
+const BASE_PATH = process.env.BASE_PATH || "/"; // Caminho base configurável
+
+app.use(BASE_PATH, indexRouter);
+app.use(`${BASE_PATH}functions`, functionsRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
