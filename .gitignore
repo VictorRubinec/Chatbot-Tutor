@@ -1,11 +1,6 @@
 /arquivos
-/templates
+/node_modules
+```
 
-
-gctts.json
-openai.json
-record.wav
-app.py
-*.mp3
-*.wav
+package-lock.json
 ```
