@@ -7,8 +7,6 @@ const PORT = process.env.PORT || 3000;
 
 require('dotenv').config();
 
-console.log(process.env.BASE_PATH);
-
 var app = express();
 
 const indexRouter = require("./src/routes/indexRoute.js");
@@ -27,5 +25,6 @@ app.use(`${base_path}functions`, functionsRouter);
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
-    console.log(`App is available at: https://chatbot-r91ni7a0n-victorrubinecs-projects.vercel.app`);
+    console.log(`App is available at: http://localhost:${PORT}`);
+    // console.log(`App is available at: https://chatbot-r91ni7a0n-victorrubinecs-projects.vercel.app`);
 });

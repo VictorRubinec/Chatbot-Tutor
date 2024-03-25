@@ -5,17 +5,29 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatbot</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 
 <body onload="chat()">
     <h1>Chatbot</h1>
 
-    <div id="user-input">
-        <button id="gravar-btn">Gravar</button>
+    <div id="chat-history" class="chat-div">
+        <div class='bot-div'>
+            <p class="mensagem-bot">Olá! Como posso ajudar?</p>
+        </div>
+        <div class='user-div'>
+            <p class="mensagem-user">Olá! Como posso ajudar?</p>
+        </div>
+    </div>
+
+    <div id="user-input" class="user-input">
+        <textarea id="mensagem-input" class="mensagem-input" placeholder="Digite sua mensagem"></textarea>
+        <div class="botoes-div">
+            <button id="gravar-btn" class="gravar-btn">Gravar</button>
+            <button id="enviar-btn" class="enviar-btn">Enviar</button>
+        </div>
         <span id="erro-span"></span>
     </div>
-    <div id="chat-history"></div>
-
     <script src="../scripts/chatbot.js"></script>
 </body>
 

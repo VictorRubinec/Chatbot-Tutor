@@ -15,4 +15,8 @@ router.post("/transcribe-audio", function (req, res) {
     functionsController.transcreverAudio(req, res);
 });
 
+router.post("/falar-audio", function (req, res) {
+    functionsController.falarAudio(req, res);
+});
+
 module.exports = router;

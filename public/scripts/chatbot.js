@@ -35,12 +35,12 @@ function chat() {
 
                 mediaRecorder.onstop = function () {
                     const audioBlob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
-                    const audioURL = URL.createObjectURL(audioBlob);
                     const reader = new FileReader();
                     reader.readAsDataURL(audioBlob);
                     reader.onloadend = function () {
                         const base64data = reader.result.split(',')[1];
-                        transcreverAudio(base64data);
+                        if (base64data !== '' && base64data !== null && base64data !== undefined) transcreverAudio(base64data);
+                        else console.log('Sem dados de áudio.');
                     }
                     chunks = [];
                 }
@@ -66,34 +66,37 @@ function chat() {
         fetch('/functions/transcribe-audio', requestOptions)
             .then(response => response.json())
             .then(data => {
-                exibirMensagem(data.text);
                 messageHistory.push(
-                    {"role": "user", "content": data.text}
+                    { "role": "user", "content": data.text }
                 );
-                obterRespostaDoChatGPT(messageHistory);
+                exibirMensagem(messageHistory[messageHistory.length - 1]);
+                obterRespostaDoChatGPT(messageHistory[messageHistory.length - 1]);
             })
             .catch(function (erro) {
                 console.log('Erro ao transcrever áudio:', erro);
-                // Tratar erro de forma mais específica, se necessário
             });
     }
 
     function obterRespostaDoChatGPT(messageHistory) {
-        fetch('/functions/chat', {
+
+        const requestOptions = {
             method: 'POST',
-            body: JSON.stringify({
-                messages: messageHistory
-            }),
             headers: {
-                'Content-Type': 'application/json'
-            }
-        })
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                "messages": messageHistory
+            })
+        }
+
+        fetch('/functions/chat', requestOptions)
             .then(response => response.json())
             .then(data => {
-                exibirMensagem(data.response);
+                exibirMensagem(data);
                 messageHistory.push(
-                    {"role": "assistant", "content": data.response}
+                    { "role": "assistant", "content": data.response }
                 );
+                // falarResposta(data.response);
             })
             .catch(function (erro) {
                 console.log('Erro ao obter resposta do ChatGPT:', erro);
@@ -102,9 +105,34 @@ function chat() {
 
     function exibirMensagem(message) {
         console.log('Mensagem:', message);
-        const messageElement = document.createElement('div');
-        messageElement.className = 'message';
-        messageElement.innerHTML = message;
-        chatHistory.appendChild(messageElement);
+        var messageElement;
+        if (message.role === 'user') {
+            messageElement = "<div class='mensagem-user'>" + message + "</div>";
+        } else if (message.role === 'assistant') {
+            messageElement = "<div class='mensagem-assistant'>" + message + "</div>";
+        }
+        chatHistory += messageElement;
+    }
+
+    function falarResposta(resposta) {
+
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                "input": resposta
+            })
+        };
+
+        fetch('/functions/falar-audio', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+
+            })
+            .catch(function (erro) {
+                console.log('Erro ao falar resposta:', erro);
+            });
     }
 }
