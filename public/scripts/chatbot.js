@@ -1,4 +1,12 @@
 function chat() {
+    
+    const configIcon = document.getElementById('config-icon');
+    const soundIconOn = document.getElementById('sound-on');
+    const soundIconOff = document.getElementById('sound-off');
+
+    const menuConfig = document.getElementById('menu-content');
+
+    const modeloVoz = document.getElementById('modelo-voz');
 
     const btnGravar = document.getElementById('gravar-btn');
     const btnEnviar = document.getElementById('enviar-btn');
@@ -15,9 +23,54 @@ function chat() {
     let chunks = [];
     let messageHistory = [];
 
-    btnGravar.addEventListener('click', toggleGravacao);
+    let controleDeVoz = true;
+
+    let vozTutor = modeloVoz.value;
+
     btnEnviar.addEventListener('click', enviarMensagem);
     btnModelo.addEventListener('click', modeloAssistente);
+
+    btnGravar.addEventListener('click', function () {
+        if (btnGravar.innerHTML === 'Gravar') {
+            iniciarGravacao();
+            btnGravar.className = 'btn-gravando';
+        } else {
+            pararGravacao();
+            btnGravar.className = 'btn';
+        }
+    });
+
+    modeloVoz.addEventListener('change', function () {
+        vozTutor = modeloVoz.value;
+    });
+
+    configIcon.addEventListener('click', function () {
+        if (menuConfig.style.display === 'none' || menuConfig.style.display === '') {
+            menuConfig.style.display = 'block';
+        } else {
+            menuConfig.style.display = 'none';
+        }
+    });
+
+    window.addEventListener('click', function (event) {
+        if (event.target !== configIcon && event.target !== menuConfig) {
+            menuConfig.style.display = 'none';
+        }
+    });
+
+    soundIconOn.addEventListener('click', function () {
+        soundIconOn.style.display = 'none';
+        soundIconOff.style.display = 'block';
+
+        controleDeVoz = false;
+    });
+
+    soundIconOff.addEventListener('click', function () {
+        soundIconOff.style.display = 'none';
+        soundIconOn.style.display = 'block';
+       
+        controleDeVoz = true;
+    });
 
     mensagemInput.addEventListener('keyup', function (event) {
         if (event.key === 'Enter' && !event.shiftKey) {
@@ -33,27 +86,16 @@ function chat() {
         }
     });
 
-    // if (messageHistory.length == 0) modalModelo.style.display = 'block';
+    if (messageHistory.length == 0) modalModelo.style.display = 'block';
 
     function modeloAssistente() {
         messageHistory.push(
-            { "role": "system", "content": "Quando houver quebra de linha em sua mensagem, substitua por <br>" },
+            { "role": "system", "content": "Não use emojis" },
             { "role": "system", "content": "você é um ChatBot com função de " + modeloInput.value },
             { "role": "system", "content": "se apresente para o usuário" }
         );
-
         modalModelo.style.display = 'none';
         obterRespostaDoChatGPT(messageHistory);
-    }
-
-    function toggleGravacao() {
-        if (btnGravar.innerHTML === 'Gravar') {
-            btnGravar.style.backgroundColor = 'red';
-            iniciarGravacao();
-        } else {
-            btnGravar.style.backgroundColor = 'green';
-            pararGravacao();
-        }
     }
 
     function falarAudio(base64, type) {
@@ -78,25 +120,12 @@ function chat() {
             messageHistory.push(
                 { "role": "user", "content": mensagem }
             );
-            console.log('Histórico de mensagens:', messageHistory);
             exibirMensagem(messageHistory[messageHistory.length - 1]);
             obterRespostaDoChatGPT(messageHistory);
             mensagemInput.value = '';
         } else {
             console.log('Mensagem vazia.');
         }
-    }
-
-    function blobToBuffer(blob) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = function () {
-                const buffer = reader.result;
-                resolve(buffer);
-            }
-            reader.onerror = reject;
-            reader.readAsArrayBuffer(blob);
-        });
     }
 
     function iniciarGravacao() {
@@ -116,22 +145,8 @@ function chat() {
                 }
 
                 mediaRecorder.onstop = function () {
-                    const audioBlob = new Blob(chunks, { type: 'audio/ogg' });
-                    
-                    // const buffer = blobToBuffer(audioBlob);
-                    // const audio = buffer.then(function (result) {
-                        // console.log('Resultado:', result);
-                        // transcreverAudio(buffer);
-                    // });
-            
-                    
-                    const reader = new FileReader();
-                    reader.readAsDataURL(audioBlob);
-                    reader.onloadend = function () {
-                        const base64data = reader.result.split(',')[1];
-                        // dividirAudio(base64data);
-                        transcreverAudio(base64data);
-                    }
+                    const audioBlob = new Blob(chunks, { type: 'audio/wav' });
+                    transcreverAudio(audioBlob);
                     chunks = [];
                 }
             })
@@ -144,58 +159,21 @@ function chat() {
         btnGravar.innerHTML = 'Gravar';
         mediaRecorder.stop();
     }
-
-    // function dividirAudio(base64data) {
-    //     // 20KB
-    //     const chunkSize = 1024 * 20;
-    //     var totalChunks = Math.ceil(base64data.length / chunkSize);
-    //     let audio = [];
-
-    //     for (let i = 0; i < totalChunks; i++) {
-    //         const start = i * chunkSize;
-    //         const end = start + chunkSize;
-    //         audio.push(base64data.slice(start, end));
-    //     }
-
-    //     console.log('Áudio dividido:', audio.length);
-    //     console.log('Total de chunks:', totalChunks);
-
-    //     console.log('Áudio:', audio);
-    //     console.log('Áudio:', audio[0]);
-
-    //     for (let i = 0; i < totalChunks; i++) {
-    //         setTimeout(() => {
-    //             console.log('index:', i)
-    //             // console.log('chunk:', audio[i])
-    //             transcreverAudio(audio[i], i + 1, totalChunks);
-    //             if (i === totalChunks - 1) {
-    //                 console.log('Áudio enviado.');
-    //                 audio = [];
-    //             }
-    //         }, i * 1000);
-    //     }
-    // }
-
+    
     function transcreverAudio(audioBlob) {
-        
         const requestOptions = {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'audio/wav'
             },
-            body: JSON.stringify({
-                audio: audioBlob
-            })
+            body: audioBlob
         };
-
         fetch('/functions/transcribe-audio', requestOptions)
             .then(response => response.json())
             .then(data => {
-                console.log('Texto transcrito:', data);
                 messageHistory.push(
                     { "role": "user", "content": data.text }
                 );
-                console.log('Histórico de mensagens:', messageHistory);
                 exibirMensagem(messageHistory[messageHistory.length - 1]);
                 obterRespostaDoChatGPT(messageHistory);
             })
@@ -221,7 +199,7 @@ function chat() {
                     { "role": "assistant", "content": data.response }
                 );
                 exibirMensagem(messageHistory[messageHistory.length - 1]);
-                textoParaAudio(data.response);
+                if (controleDeVoz) textoParaAudio(data.response);
             })
             .catch(function (erro) {
                 console.log('Erro ao obter resposta do ChatGPT:', erro);
@@ -229,7 +207,6 @@ function chat() {
     }
 
     function exibirMensagem(message) {
-        console.log('Mensagem:', message);
         var messageElement;
         if (message.role === 'user') {
             messageElement = "<div class='user-div'><p class='mensagem-user'>" + message.content + "</p></div>";
@@ -239,6 +216,7 @@ function chat() {
             throw new Error('Mensagem inválida.');
         }
         chatHistory.innerHTML += messageElement;
+        chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
     function textoParaAudio(resposta) {
@@ -248,13 +226,13 @@ function chat() {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                "input": resposta
+                voz: vozTutor,
+                input: resposta
             })
         };
         fetch('/functions/falar-audio', requestOptions)
             .then(response => response.json())
             .then(data => {
-                console.log('Resposta:', data);
                 falarAudio(data.audio, 'audio/wav');
             })
             .catch(function (erro) {

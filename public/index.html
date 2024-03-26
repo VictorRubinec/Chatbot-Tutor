@@ -9,32 +9,53 @@
 </head>
 
 <body onload="chat()">
-    <!-- <h1>Chatbot</h1> -->
 
-    <div id="chat-history" class="chat-div">
-        <!-- <div class='user-div'>
-            <p class="mensagem-user">Olá! Como posso ajudar?</p>
+    <div class="header">
+        <h1>Chatbot Tutor</h1>
+        <div class="menu">
+            <img src="css/assets/config.png" class="config-icon" id="config-icon">
+            <div class="menu-content" id="menu-content">
+                <table>
+                    <tr>
+                        <td><p>Tutor</p></td>
+                        <td>
+                            <select id="modelo-voz" class="modelo-voz">
+                                <option value="Alloy" selected>Alloy</option>
+                                <option value="Echo">Echo</option>
+                                <option value="Fable">Fable</option>
+                                <option value="Onyx">Onyx</option>
+                                <option value="Nova">Nova</option>
+                                <option value="Shimmer">Shimmer</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><p>Voz</p></td>
+                        <td>
+                            <img src="css/assets/sound_on.png" class="sound-icon" id="sound-on">
+                            <img src="css/assets/sound_off.png" class="sound-icon" id="sound-off">
+                        </td>
+                    </tr>
+                </table>
+            </div>
         </div>
-        <div class='bot-div'>
-            <p class="mensagem-bot">Olá! Como posso ajudar?</p>
-        </div> -->
     </div>
+
+    <div id="chat-history" class="chat-div"></div>
 
     <div id="user-input" class="user-input">
         <textarea id="mensagem-input" class="mensagem-input" placeholder="Digite sua mensagem"></textarea>
         <div class="botoes-div">
-            <button id="gravar-btn" class="gravar-btn">Gravar</button>
-            <button id="enviar-btn" class="enviar-btn">Enviar</button>
+            <button id="gravar-btn" class="btn">Gravar</button>
+            <button id="enviar-btn" class="btn">Enviar</button>
         </div>
-        <span id="erro-span"></span>
     </div>
 
     <div id="modal-modelo" class="modal-modelo">
         <div class="modal-content">
-            <span class="close">&times;</span>
             <p>Insira quem o tutor é:</p>
             <input type="text" id="modelo-input" class="tutor-input" placeholder="Ex: Comprador de procesasdores Intel">
-            <button id="modelo-btn" class="enviar-tutor-btn">Enviar</button> 
+            <button id="modelo-btn" class="enviar-tutor-btn">Enviar</button>
         </div>
     </div>
 
