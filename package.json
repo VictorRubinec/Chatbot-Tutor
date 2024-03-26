@@ -1,6 +1,6 @@
 {
   "name": "Chatbot Tutor",
-  "version": "0.5.1",
+  "version": "0.5.2.5",
   "description": "Um chatbot tutor baseado em OpenAI.",
   "main": "app.js",
   "scripts": {
@@ -23,6 +23,7 @@
     "dotenv": "^16.4.5",
     "express": "^4.19.1",
     "nodemon": "^3.1.0",
+    "openai": "^4.29.2",
     "pm2": "^5.3.1"
   }
 }

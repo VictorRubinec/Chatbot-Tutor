@@ -1,17 +1,19 @@
-const textToSpeech = require('@google-cloud/text-to-speech');
+const openai = require('openai');
+const { Buffer } = require('buffer');
+const fs = require('fs');
 
 require('dotenv').config();
 
 const openai_key = process.env.OPENAI_API_KEY;
-const gctts_private_key = process.env.GCTTS_PRIVATE_KEY;
-const gctts_client_email = process.env.GCTTS_CLIENT_EMAIL;
 
-const client = new textToSpeech.TextToSpeechClient();
+const client = new openai.OpenAI(openai_key);
 
 function testar(req, res) {
     console.log("ENTRAMOS NO avisoController");
     res.send("ENTRAMOS NO AVISO CONTROLLER");
 }
+
+let chunks = [];
 
 function base64toBlob(base64Data, contentType) {
     const byteCharacters = atob(base64Data);
@@ -34,88 +36,136 @@ async function transcreverAudio(req, res) {
 
         const formData = new FormData();
         formData.append('file', audioBlob, 'audio.ogg');
-        formData.append('model', 'whisper-1');
 
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${openai_key}`,
-            },
-            body: formData
-        };
+        const transcription = await client.audio.transcriptions.create({
+            model: 'whisper-1',
+            file: formData.get('file')
+        });
 
-        fetch('https://api.openai.com/v1/audio/transcriptions', requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                res.json({ text: data.text });
-            })
-            .catch(error => {
-                console.error('Erro ao transcrever áudio:', error);
-            });
+        res.json({ text: transcription.text });
+
+        // const { buffer } = req.body;
+
+        // // estou recebendo um buffer
+        // console.log('Buffer:', buffer);
+
+        // const audio = Buffer.from(buffer).toString('base64');
+
+        // console.log('Audio:', audio);
+
+        // console.log('Buffer:', buffer);
+
+        // const audioa = audio.then(function (result) {
+        //     console.log('Resultado:', result);
+        //     // transcreverAudio(buffer);
+        // });
+
+        // // transformar o buffer em base64
+        // const audio64 = Buffer.from(audio).toString('base64');
+
+        // const audioBlob = base64toBlob(audio64, 'audio/ogg; codecs=opus');
+
+        // console.log('Blob:', audioBlob);
+
+        // const { audio } = req.body;
+
+        // console.log(`audio: ${audio}`);
+
+        // const url = audio.replace('blob:', '');
+
+        // const response = await fetch(url);
+
+        // // criar um blob .ogg
+        // const blob = new Blob([await response.arrayBuffer()], { type: 'audio/ogg; codecs=opus' });
+
+        // console.log(blob);
+
+        // const formData = new FormData();
+        // formData.append('file', blob, 'audio.ogg');
+
+        // const transcription = await client.audio.transcriptions.create({
+        //     model: 'whisper-1',
+        //     file: formData.get('file')
+        // });
+
+        // console.log('Transcrição:', transcription.text);
+
+        // console.log('Transcrição:', transcription.text);
+
+        // const { audio, index, totalChunks } = req.body;
+
+        // console.log('Index:', index);
+        // console.log('Total de chunks:', totalChunks);
+
+        // if (index === totalChunks) {
+
+        //     console.log('Transcrevendo áudio...');
+
+        //     const chunkInteira = chunks.join('');
+
+        //     console.log('Tamanho do áudio:', chunkInteira);
+
+        //     const audioBlob = base64toBlob(chunkInteira, 'audio/ogg; codecs=opus');
+
+        //     const formData = new FormData();
+        //     formData.append('file', audioBlob, 'audio.ogg');
+
+        //     chunks = [];
+
+        //     const transcription = await client.audio.transcriptions.create({
+        //         model: 'whisper-1',
+        //         file: formData.get('file')
+        //     });
+
+        //     console.log('Transcrição:', transcription.text);
+        //     console.log('Chunks:', chunks.length)
+
+        //     res.json({ text: transcription.text });
+        // } else {
+        //     chunks.push(audio);
+        //     console.log('Chunk adicionado:', index);
+        // }
+
+
 
     } catch (error) {
-        console.error('Error transcribing audio:', error);
+        console.error('Erro ao transcrever o áudio:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
 
 async function respostaGPT(req, res) {
     try {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${openai_key}`,
-            },
-            body: JSON.stringify({
-                "model": "gpt-3.5-turbo",
-                "messages": req.body.messages
-            })
-        };
-
-        fetch('https://api.openai.com/v1/chat/completions', requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                res.json({ response: data.choices[0].message.content });
-            })
-            .catch(error => {
-                console.error('Erro ao obter resposta do ChatGPT:', error);
-            });
+        const response = await client.chat.completions.create({
+            model: 'gpt-3.5-turbo',
+            messages: req.body.messages
+        });
+        res.json({ response: response.choices[0].message.content });
     } catch (error) {
-        console.error('Error interacting with ChatGPT:', error);
+        console.error('Erro ao obter resposta do GPT:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
 }
 
 async function falarAudio(req, res) {
-    
-    const texto = req.body.input;
+    try {
+        var texto = req.body.input;
 
-    console.log('Texto:', texto);
+        texto = texto.replace(/<[^>]*>?/gm, '');
 
-    const request = {
-        input: { text: texto },
-        voice: { languageCode: 'en-US', ssmlGender: 'NEUTRAL' },
-        audioConfig: { audioEncoding: 'MP3' },
-    };
+        const response = await client.audio.speech.create({
+            model: 'tts-1',
+            voice: 'alloy',
+            input: texto,
+        });
 
-    console.log('Request:', request);
+        const audio64 = Buffer.from(await response.arrayBuffer()).toString('base64');
 
-    const [response] = await client.synthesizeSpeech(request);
-
-    console.log('Response:', response);
-
-    if (response.error) {
-        console.error('Error synthesizing speech:', response.error);
+        res.json({ audio: audio64 });
+    } catch (error) {
+        console.error('Erro ao sintetizar fala:', error);
         res.status(500).json({ error: 'Internal server error' });
     }
-
-    const audioContent = response.audioContent;
-
-    console.log('Audio content:', audioContent);
-    console.log('Audio content:', audioContent.toString('base64'));
-
-    res.json({ audio: audioContent.toString('base64') });
 }
 
 module.exports = {
