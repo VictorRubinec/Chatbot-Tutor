@@ -226,9 +226,11 @@ function chat() {
                 messageHistory.push(
                     { "role": "assistant", "content": data.response }
                 );
-                exibirMensagem(messageHistory[messageHistory.length - 1]);
                 if (controleDeVoz) textoParaAudio(data.response);
-                else aguardandoResposta('assistant', false);
+                else {
+                    aguardandoResposta('assistant', false);
+                    exibirMensagem(messageHistory[messageHistory.length - 1]);
+                }
             })
             .catch(function (erro) {
                 console.log('Erro ao obter resposta do ChatGPT:', erro);
@@ -251,6 +253,7 @@ function chat() {
             .then(response => response.json())
             .then(data => {
                 aguardandoResposta('assistant', false);
+                exibirMensagem(messageHistory[messageHistory.length - 1]);
                 falarAudio(data.audio, 'audio/wav');
             })
             .catch(function (erro) {
