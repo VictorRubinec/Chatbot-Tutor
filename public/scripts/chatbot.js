@@ -1,5 +1,5 @@
 function chat() {
-    
+
     const configIcon = document.getElementById('config-icon');
     const soundIconOn = document.getElementById('sound-on');
     const soundIconOff = document.getElementById('sound-off');
@@ -27,8 +27,33 @@ function chat() {
 
     let vozTutor = modeloVoz.value;
 
-    btnEnviar.addEventListener('click', enviarMensagem);
-    btnModelo.addEventListener('click', modeloAssistente);
+    btnEnviar.addEventListener('click', function () {
+        if (mensagemInput.value !== '') {
+            mensagemInput.style.border = '1px solid #494949';
+            mensagemInput.style.backgroundColor = '#313131';
+            mensagemInput.style.color = 'white';
+            mensagemInput.placeholder = 'Digite sua mensagem';
+            enviarMensagem();
+        } else {
+            mensagemInput.style.border = '1px solid red';
+            mensagemInput.style.backgroundColor = '#ffcccc';
+            mensagemInput.style.color = 'black';
+            mensagemInput.placeholder = 'Mensagem vazia';
+            mensagemInput.focus();
+        }
+    });
+
+    btnModelo.addEventListener('click', function () {
+        if (modeloInput.value !== '') {
+            modeloAssistente();
+        } else {
+            modeloInput.style.border = '1px solid red';
+            modeloInput.style.backgroundColor = '#ffcccc';
+            modeloInput.style.color = 'black';
+            modeloInput.placeholder = 'Campo obrigatório';
+            modeloInput.focus();
+        }
+    });
 
     btnGravar.addEventListener('click', function () {
         if (btnGravar.innerHTML === 'Gravar') {
@@ -53,7 +78,7 @@ function chat() {
     });
 
     window.addEventListener('click', function (event) {
-        if (event.target !== configIcon && event.target !== menuConfig) {
+        if (event.target !== configIcon && event.target !== menuConfig && event.target !== soundIconOn && event.target !== soundIconOff && event.target !== modeloVoz && event.target !== modeloInput && event.target !== btnModelo) {
             menuConfig.style.display = 'none';
         }
     });
@@ -68,7 +93,7 @@ function chat() {
     soundIconOff.addEventListener('click', function () {
         soundIconOff.style.display = 'none';
         soundIconOn.style.display = 'block';
-       
+
         controleDeVoz = true;
     });
 
@@ -109,7 +134,7 @@ function chat() {
         const byteArray = new Uint8Array(byteNumbers);
         const blob = new Blob([byteArray], { type: type });
 
-        const url = URL.createObjectURL(blob);
+        const url = URL.createObjectURL(blob); 1
         const audio = new Audio(url);
         audio.play();
     }
@@ -159,8 +184,9 @@ function chat() {
         btnGravar.innerHTML = 'Gravar';
         mediaRecorder.stop();
     }
-    
+
     function transcreverAudio(audioBlob) {
+        aguardandoResposta('user', true);
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -171,6 +197,7 @@ function chat() {
         fetch('/functions/transcribe-audio', requestOptions)
             .then(response => response.json())
             .then(data => {
+                aguardandoResposta('user', false);
                 messageHistory.push(
                     { "role": "user", "content": data.text }
                 );
@@ -183,6 +210,7 @@ function chat() {
     }
 
     function obterRespostaDoChatGPT(messageHistory) {
+        aguardandoResposta('assistant', true);
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -200,9 +228,33 @@ function chat() {
                 );
                 exibirMensagem(messageHistory[messageHistory.length - 1]);
                 if (controleDeVoz) textoParaAudio(data.response);
+                else aguardandoResposta('assistant', false);
             })
             .catch(function (erro) {
                 console.log('Erro ao obter resposta do ChatGPT:', erro);
+            });
+    }
+
+
+    function textoParaAudio(resposta) {
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                voz: vozTutor,
+                input: resposta
+            })
+        };
+        fetch('/functions/falar-audio', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                aguardandoResposta('assistant', false);
+                falarAudio(data.audio, 'audio/wav');
+            })
+            .catch(function (erro) {
+                console.log('Erro ao falar resposta:', erro);
             });
     }
 
@@ -219,24 +271,36 @@ function chat() {
         chatHistory.scrollTop = chatHistory.scrollHeight;
     }
 
-    function textoParaAudio(resposta) {
-        const requestOptions = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                voz: vozTutor,
-                input: resposta
-            })
-        };
-        fetch('/functions/falar-audio', requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                falarAudio(data.audio, 'audio/wav');
-            })
-            .catch(function (erro) {
-                console.log('Erro ao falar resposta:', erro);
-            });
+    function aguardandoResposta(role, state) {
+        switch (role) {
+            case 'user':
+                if (state === true) {
+                    chatHistory.innerHTML += "<div class='user-div'><p class='mensagem-user'> . . . </p></div>";
+                    btnEnviar.disabled = true;
+                    btnGravar.disabled = true;
+                    mensagemInput.disabled = true;
+                } else {
+                    chatHistory.removeChild(chatHistory.lastChild);
+                    btnEnviar.disabled = false;
+                    btnGravar.disabled = false;
+                    mensagemInput.disabled = false;
+                }
+                break;
+            case 'assistant':
+                if (state === true) {
+                    chatHistory.innerHTML += "<div class='bot-div'><p class='mensagem-bot'> . . . </p></div>";
+                    btnEnviar.disabled = true;
+                    btnGravar.disabled = true;
+                    mensagemInput.disabled = true;
+                } else {
+                    chatHistory.removeChild(chatHistory.lastChild);
+                    btnEnviar.disabled = false;
+                    btnGravar.disabled = false;
+                    mensagemInput.disabled = false;
+                }
+                break;
+            default:
+                break;
+        }
     }
 }

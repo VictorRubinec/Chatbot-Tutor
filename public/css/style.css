@@ -6,14 +6,14 @@
 
 body{
     font-family: 'Poppins', sans-serif;
-    background-color: #f1f1f1;
+    background-color: #202020;
 }
 
 /* Header */
 
 .config-icon{
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     margin-left: 10px;
     cursor: pointer;
 }
@@ -23,8 +23,9 @@ body{
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #333;
+    background-color: #131313;
     color: white;
+    height: 60px;
 }
 
 .menu{
@@ -67,20 +68,19 @@ body{
     justify-content: space-between;
     align-items: center;
     padding: 5px;
-    background-color: #333;
+    background-color: #333333;
     color: white;
     border: 1px solid #ccc;
     z-index: 1;
     border-radius: 5px;
 }
 
-
 /* body */
 
 .chat-div{
     display: flex;
     flex-direction: column;
-    height: calc(100vh - 150px);
+    height: calc(100vh - (150px + 60px));
     overflow-y: scroll;
 }
 
@@ -88,12 +88,8 @@ body{
     width: 10px;
 }
 
-.chat-div::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
 .chat-div::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #484848;
     border-radius: 10px;
 }
 
@@ -102,12 +98,20 @@ body{
     cursor: pointer;
 }
 
+.user-div{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+}
+
 .mensagem-user{
     background-color: #4CAF50;
     color: white;
     padding: 10px;
     margin: 10px;
-    border-radius: 10px;
+    border-radius: 10px 00px 10px 10px;
     max-width: 60%;
     text-align: justify;
     white-space: pre-line;
@@ -123,40 +127,39 @@ body{
 }
 
 .mensagem-bot{
-    background-color: #b2b2b2;
+    background-color: #555555;
     color: white;
     padding: 10px;
     margin: 10px;
-    border-radius: 10px;
+    border-radius: 0px 10px 10px 10px;
     max-width: 60%;
     text-align: justify;
     white-space: pre-line;
     word-wrap: break-word;
 }
 
-
 /* footer */
 
 .btn{
-    background-color: #4CAF50;
+    background-color: #276029;
     color: white;
     padding: 14px 20px;
     margin: 8px 0;
     border: none;
     cursor: pointer;
     width: 100px;
-    border-radius: 10px;
+    border-radius: 8px;
     height: 50px;
     font-size: 18px;
     font-weight: bold;
 }
 
 .btn:hover{
-    background-color: #45a049;
+    background-color: #1f4c1b;
 }
 
 .btn:active{
-    background-color: #3e8e41;
+    background-color: #1a4516;
 }
 
 .btn-gravando{
@@ -181,19 +184,10 @@ body{
     background-color: #c41e0b;
 }
 
-.user-div{
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-    width: 100%;
-}
-
 .user-input{
     width: 100%;
     height: 150px;
     padding: 10px;
-    background-color: #b2b2b2;
     position: fixed;
     bottom: 0;
     display: flex;
@@ -206,28 +200,30 @@ body{
     height: 100%;
     margin: 10px;
     border-radius: 10px;
-    border: 1px solid #ccc;
-    background-color: white;
+    border: 1px solid #494949;
+    background-color: #313131;
     resize: none;
     font-size: 18px;
+    color: white;
+}
+
+.mensagem-input:focus{
+    background-color: #3d3d3d;
+    border: 1px solid #646464;
 }
 
 .mensagem-input::-webkit-scrollbar {
     width: 10px;
 }
 
-.mensagem-input::-webkit-scrollbar-track {
-    background: #f1f1f1;
-}
-
 .mensagem-input::-webkit-scrollbar-thumb {
-    background: #888;
+    background: #484848;
     border-radius: 10px;
 }
 
 .mensagem-input::-webkit-scrollbar-thumb:hover {
-    cursor: pointer;
     background: #555;
+    cursor: pointer;
 }
 
 .mensagem-input:focus{
@@ -256,47 +252,48 @@ body{
 }
 
 .modal-content{
-    background-color: #fefefe;
+    background-color: #272727;
     margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 500px;
     border-radius: 10px;
+    width: fit-content;
+    padding: 10px;
+    border: 1px solid #3e3e3e;
 }
 
 .modal-content p{
     font-size: 18px;
-}
-
-.modal-content button{
-    background-color: #4CAF50;
+    padding: 10px;
     color: white;
-    padding: 10px 16px;
-    margin: 8px 0;
-    border: none;
-    cursor: pointer;
-    width: 100px;
-    border-radius: 10px;
-    font-size: 16px;
-    font-weight: bold;
 }
 
-.modal-content button:hover{
-    background-color: #45a049;
+.modelo-div-btn{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
 }
 
-.modal-content button:active{
-    background-color: #3e8e41;
+.modelo-div-btn .btn{
+    height: 40px;
+    padding: 8px 12px;
+    border-radius: 5px;
+    margin: 10px;
 }
 
 .modal-content input{
-    width: 100%;
+    width: 500px;
     padding: 10px;
+    margin: 10px;
     border-radius: 10px;
-    border: 1px solid #ccc;
+    border: 1px solid #494949;
+    background-color: #313131;
+    color: white;
     font-size: 18px;
 }
 
 .modal-content input:focus{
+    background-color: #3d3d3d;
+    border: 1px solid #646464;
     outline: none;
 }

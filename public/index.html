@@ -17,7 +17,9 @@
             <div class="menu-content" id="menu-content">
                 <table>
                     <tr>
-                        <td><p>Tutor</p></td>
+                        <td>
+                            <p>Tutor</p>
+                        </td>
                         <td>
                             <select id="modelo-voz" class="modelo-voz">
                                 <option value="Alloy" selected>Alloy</option>
@@ -30,7 +32,9 @@
                         </td>
                     </tr>
                     <tr>
-                        <td><p>Voz</p></td>
+                        <td>
+                            <p>Voz</p>
+                        </td>
                         <td>
                             <img src="css/assets/sound_on.png" class="sound-icon" id="sound-on">
                             <img src="css/assets/sound_off.png" class="sound-icon" id="sound-off">
@@ -41,7 +45,15 @@
         </div>
     </div>
 
-    <div id="chat-history" class="chat-div"></div>
+    <div id="chat-history" class="chat-div">
+        <!-- <div class="user-div">
+            <p class="mensagem-user">Olá, eu sou o Chatbot Tutor. Como posso te ajudar?</p>
+        </div>
+        <div class="bot-div">
+            <p class="mensagem-bot">Olá, eu sou o Chatbot Tutor. Como posso te ajudar?</p>
+        </div> -->
+    </div>
+
 
     <div id="user-input" class="user-input">
         <textarea id="mensagem-input" class="mensagem-input" placeholder="Digite sua mensagem"></textarea>
@@ -54,8 +66,10 @@
     <div id="modal-modelo" class="modal-modelo">
         <div class="modal-content">
             <p>Insira quem o tutor é:</p>
-            <input type="text" id="modelo-input" class="tutor-input" placeholder="Ex: Comprador de procesasdores Intel">
-            <button id="modelo-btn" class="enviar-tutor-btn">Enviar</button>
+            <input type="text" id="modelo-input" class="tutor-input" placeholder="Ex: Comprador de processadores Intel">
+            <div class="modelo-div-btn">
+                <button id="modelo-btn" class="btn">Enviar</button>
+            </div>
         </div>
     </div>
 
