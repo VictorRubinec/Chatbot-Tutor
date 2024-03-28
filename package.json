@@ -1,6 +1,6 @@
 {
   "name": "Chatbot Tutor",
-  "version": "1.0,1",
+  "version": "1.0.2",
   "description": "Um chatbot tutor baseado em OpenAI.",
   "main": "app.js",
   "scripts": {
@@ -8,7 +8,8 @@
     "dev": "nodemon --exec node app.js",
     "build": "pm2 start app.js",
     "stop": "pm2 stop app.js",
-    "monit": "pm2 monit"
+    "monit": "pm2 monit",
+    "test": "pm2 start app.js -i 1 --max-memory-restart 1G"
   },
   "keywords": [
     "openai",

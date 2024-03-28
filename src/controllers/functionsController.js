@@ -86,10 +86,7 @@ async function respostaGPT(req, res) {
 async function falarAudio(req, res) {
     try {
         var { input, voz } = req.body; 
-
-        console.log('Texto:', input);
-        console.log('Voz:', voz);
-
+        
         input = input.replace(/<[^>]*>?/gm, '');
         voz = voz.toLowerCase();
 
