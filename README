@@ -1,0 +1,2 @@
+Uma aplicação onde o usuário define um tutor e interage com ele, podendo ser por voz ou texto.
+O tutor utiliza as APIs da OpenAI, a whisper para a descrição do áudio que o usuário grava para texto, a gpt-3.5 para reponder o usuário e a text-to-speech para a leitura do texto gerado. 
