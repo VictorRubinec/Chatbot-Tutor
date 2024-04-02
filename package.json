@@ -1,6 +1,6 @@
 {
   "name": "chatbot_tutor",
-  "version": "1.0.4",
+  "version": "1.0.6",
   "description": "Um chatbot tutor baseado em OpenAI.",
   "main": "app.js",
   "scripts": {

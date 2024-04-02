@@ -3,9 +3,11 @@
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
-const PORT = process.env.PORT || 3000;
 
 require('dotenv').config();
+
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || "localhost";
 
 var app = express();
 
@@ -24,7 +26,6 @@ app.use(base_path, indexRouter);
 app.use(`${base_path}functions`, functionsRouter); 
 
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-    console.log(`App is available at: http://localhost:${PORT}`);
-    // console.log(`App is available at: https://chatbot-r91ni7a0n-victorrubinecs-projects.vercel.app`);
+    console.log(`O SERVIDOR ESTÁ RODANDO NA PORTA ${PORT}`);
+    console.log(`Aplicação disponível em: http://${HOST}:${PORT}`);
 });
