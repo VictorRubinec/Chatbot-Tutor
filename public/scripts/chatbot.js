@@ -154,30 +154,29 @@ function chat() {
     }
 
     function iniciarGravacao() {
-        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        if (typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            btnGravar.innerHTML = 'Parar';
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(function (stream) {
+                    mediaRecorder = new MediaRecorder(stream);
+                    mediaRecorder.start();
+    
+                    mediaRecorder.ondataavailable = function (event) {
+                        chunks.push(event.data);
+                    }
+    
+                    mediaRecorder.onstop = function () {
+                        const audioBlob = new Blob(chunks, { type: 'audio/wav' });
+                        transcreverAudio(audioBlob);
+                        chunks = [];
+                    }
+                })
+                .catch(function (err) {
+                    console.log('Erro ao acessar o dispositivo de áudio: ' + err);
+                });
+        } else {
             console.log('O navegador não suporta gravação de áudio.');
-            return;
         }
-
-        btnGravar.innerHTML = 'Parar';
-        navigator.mediaDevices.getUserMedia({ audio: true })
-            .then(function (stream) {
-                mediaRecorder = new MediaRecorder(stream);
-                mediaRecorder.start();
-
-                mediaRecorder.ondataavailable = function (event) {
-                    chunks.push(event.data);
-                }
-
-                mediaRecorder.onstop = function () {
-                    const audioBlob = new Blob(chunks, { type: 'audio/wav' });
-                    transcreverAudio(audioBlob);
-                    chunks = [];
-                }
-            })
-            .catch(function (err) {
-                console.log('Erro ao acessar o dispositivo de áudio: ' + err);
-            });
     }
 
     function pararGravacao() {
