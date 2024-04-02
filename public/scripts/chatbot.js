@@ -154,9 +154,9 @@ function chat() {
     }
 
     function iniciarGravacao() {
-        if (typeof navigator !== 'undefined' && navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        if (typeof window !== 'undefined' && window.navigator && window.navigator.mediaDevices && window.navigator.mediaDevices.getUserMedia) {
             btnGravar.innerHTML = 'Parar';
-            navigator.mediaDevices.getUserMedia({ audio: true })
+            window.navigator.mediaDevices.getUserMedia({ audio: true })
                 .then(function (stream) {
                     mediaRecorder = new MediaRecorder(stream);
                     mediaRecorder.start();
