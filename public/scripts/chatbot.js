@@ -98,7 +98,7 @@ function chat() {
     });
 
     mensagemInput.addEventListener('keyup', function (event) {
-        if (event.key === 'Enter' && !event.shiftKey) {
+        if (event.key === 'Enter' && !event.shiftKey && btnEnviar.disabled === false) {
             event.preventDefault();
             btnEnviar.click();
         }
@@ -293,12 +293,10 @@ function chat() {
                     chatHistory.innerHTML += "<div class='bot-div'><p class='mensagem-bot'> . . . </p></div>";
                     btnEnviar.disabled = true;
                     btnGravar.disabled = true;
-                    mensagemInput.disabled = true;
                 } else {
                     chatHistory.removeChild(chatHistory.lastChild);
                     btnEnviar.disabled = false;
                     btnGravar.disabled = false;
-                    mensagemInput.disabled = false;
                 }
                 break;
             default:

@@ -255,7 +255,7 @@ body{
     background-color: #272727;
     margin: 15% auto;
     border-radius: 10px;
-    width: fit-content;
+    width: 500px;
     padding: 10px;
     border: 1px solid #3e3e3e;
 }
@@ -282,9 +282,7 @@ body{
 }
 
 .modal-content input{
-    width: 500px;
     padding: 10px;
-    margin: 10px;
     border-radius: 10px;
     border: 1px solid #494949;
     background-color: #313131;
@@ -296,4 +294,16 @@ body{
     background-color: #3d3d3d;
     border: 1px solid #646464;
     outline: none;
+}
+
+@media screen and (max-width: 600px){
+    .chat-div{
+        height: calc(100vh - (150px + 60px));
+    }
+    .mensagem-user, .mensagem-bot{
+        max-width: 75%;
+    }
+    .modal-content input{
+        width: 90%;
+    }
 }
