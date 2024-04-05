@@ -304,7 +304,7 @@ body{
     .mensagem-user, .mensagem-bot{
         max-width: 75%;
     }
-    .modal-content input{
+    .modal-content{
         width: 90%;
     }
 }
