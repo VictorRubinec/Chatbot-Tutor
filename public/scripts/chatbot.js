@@ -1,5 +1,3 @@
-const e = require("cors");
-
 function chat() {
 
     const configIcon = document.getElementById('config-icon');
