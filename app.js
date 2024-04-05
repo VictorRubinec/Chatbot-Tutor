@@ -35,7 +35,7 @@ if (PROJETO === "desenvolvimento") {
     console.log(`Aplicação disponível em: http://${HOST}:${PORT}`);
     console.log(`Nome do domínio: ${DOMAIN}`);
   });
-} else if (PROJETO === "produção") {
+} else if (PROJETO === "producao") {
 
   const privateKeyPath = `/etc/letsencrypt/live/${DOMAIN}/privkey.pem`;
   const certificatePath = `/etc/letsencrypt/live/${DOMAIN}/fullchain.pem`;
