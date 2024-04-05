@@ -288,6 +288,7 @@ body{
     background-color: #313131;
     color: white;
     font-size: 18px;
+    width: 100%;
 }
 
 .modal-content input:focus{

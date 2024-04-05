@@ -1,3 +1,5 @@
+const e = require("cors");
+
 function chat() {
 
     const configIcon = document.getElementById('config-icon');
@@ -160,11 +162,11 @@ function chat() {
                 .then(function (stream) {
                     mediaRecorder = new MediaRecorder(stream);
                     mediaRecorder.start();
-    
+
                     mediaRecorder.ondataavailable = function (event) {
                         chunks.push(event.data);
                     }
-    
+
                     mediaRecorder.onstop = function () {
                         const audioBlob = new Blob(chunks, { type: 'audio/wav' });
                         transcreverAudio(audioBlob);
@@ -196,12 +198,17 @@ function chat() {
         fetch('/functions/transcribe-audio', requestOptions)
             .then(response => response.json())
             .then(data => {
-                aguardandoResposta('user', false);
-                messageHistory.push(
-                    { "role": "user", "content": data.text }
-                );
-                exibirMensagem(messageHistory[messageHistory.length - 1]);
-                obterRespostaDoChatGPT(messageHistory);
+                if (data.error || data.text === undefined) {
+                    error();
+                    return;
+                } else {
+                    aguardandoResposta('user', false);
+                    messageHistory.push(
+                        { "role": "user", "content": data.text }
+                    );
+                    exibirMensagem(messageHistory[messageHistory.length - 1]);
+                    obterRespostaDoChatGPT(messageHistory);
+                }
             })
             .catch(function (erro) {
                 console.log('Erro ao transcrever áudio:', erro);
@@ -222,13 +229,18 @@ function chat() {
         fetch('/functions/chat', requestOptions)
             .then(response => response.json())
             .then(data => {
-                messageHistory.push(
-                    { "role": "assistant", "content": data.response }
-                );
-                if (controleDeVoz) textoParaAudio(data.response);
-                else {
-                    aguardandoResposta('assistant', false);
-                    exibirMensagem(messageHistory[messageHistory.length - 1]);
+                if (data.error || data.response === undefined) {
+                    error();
+                    return;
+                } else {
+                    messageHistory.push(
+                        { "role": "assistant", "content": data.response }
+                    );
+                    if (controleDeVoz) textoParaAudio(data.response);
+                    else {
+                        aguardandoResposta('assistant', false);
+                        exibirMensagem(messageHistory[messageHistory.length - 1]);
+                    }
                 }
             })
             .catch(function (erro) {
@@ -251,9 +263,14 @@ function chat() {
         fetch('/functions/falar-audio', requestOptions)
             .then(response => response.json())
             .then(data => {
-                aguardandoResposta('assistant', false);
-                exibirMensagem(messageHistory[messageHistory.length - 1]);
-                falarAudio(data.audio, 'audio/wav');
+                if (data.error || data.audio === undefined) {
+                    error();
+                    return;
+                } else {
+                    aguardandoResposta('assistant', false);
+                    exibirMensagem(messageHistory[messageHistory.length - 1]);
+                    falarAudio(data.audio, 'audio/wav');
+                }
             })
             .catch(function (erro) {
                 console.log('Erro ao falar resposta:', erro);
@@ -302,5 +319,9 @@ function chat() {
             default:
                 break;
         }
+    }
+
+    function error() {
+        alert("Erro na requisição. Tente novamente mais tarde.");
     }
 }
