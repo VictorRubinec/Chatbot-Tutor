@@ -31,6 +31,7 @@ app.use(`${base_path}functions`, functionsRouter);
 if (PROJETO === "desenvolvimento") {
   // Criando um servidor HTTP
   app.listen(PORT, () => {
+    console.log(`Aplição rodando em ambiente de desenvolvimento (HTTP)`);
     console.log(`O servidor está rodando na porta ${PORT}`);
     console.log(`Aplicação disponível em: http://${HOST}:${PORT}`);
     console.log(`Nome do domínio: ${DOMAIN}`);
@@ -50,8 +51,9 @@ if (PROJETO === "desenvolvimento") {
 
   // Criando um servidor HTTPS
   server.listen(PORT, () => {
+    console.log(`Aplição rodando em ambiente de produção (HTTPS)`);
     console.log(`O servidor está rodando na porta ${PORT}`);
-    console.log(`Aplicação disponível em: http://${HOST}:${PORT}`);
+    console.log(`Aplicação disponível em: https://${HOST}:${PORT}`);
     console.log(`Nome do domínio: ${DOMAIN}`);
   });
 }
