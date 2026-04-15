@@ -1,3 +1,3 @@
 window.ChatTutorConfig = {
-    defaultApiBaseUrl: "http://localhost:3000"
+    defaultApiBaseUrl: "https://chatbot-tutor-red.vercel.app/"
 };
