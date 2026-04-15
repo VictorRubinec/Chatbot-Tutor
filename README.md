@@ -2,7 +2,7 @@
 
 Um tutor de IA interativo com múltiplos modelos, modos de ensino personalizados, transcrição de áudio e síntese de fala. Desenvolvido como portfólio com frontend em **GitHub Pages** e backend em **Vercel**.
 
-## 🎯 Características
+## Características
 
 - **2 Provedores de IA Reais**: Groq e OpenRouter com suporte a múltiplos modelos
 - **2 Modos de Ensino**:
@@ -16,7 +16,7 @@ Um tutor de IA interativo com múltiplos modelos, modos de ensino personalizados
 - **Sem Chaves de API no Frontend**: Todas as chaves sensíveis permanecem seguras no backend
 - **Chat Persistente**: Histórico salvo em `localStorage`
 
-## 🏗️ Arquitetura
+## Arquitetura
 
 ```text
 .
@@ -48,7 +48,7 @@ Um tutor de IA interativo com múltiplos modelos, modos de ensino personalizados
 └── README.md                            # Documentação do projeto
 ```
 
-## 🚀 Stack Tecnológico
+## Stack Tecnológico
 
 ### Frontend
 - **HTML5** com semântica acessível
@@ -71,7 +71,7 @@ Um tutor de IA interativo com múltiplos modelos, modos de ensino personalizados
 - **Frontend**: GitHub Pages (automático via main branch)
 - **Backend**: Vercel (serverless functions)
 
-## 📋 Modelos Disponíveis
+## Modelos Disponíveis
 
 ### Groq (Rápido e Gratuito)
 - `mixtral-8x7b-32768`
@@ -86,7 +86,7 @@ Um tutor de IA interativo com múltiplos modelos, modos de ensino personalizados
 
 **Nota**: Os modelos disponíveis podem variar. O backend possui fallback automático se um modelo ficar indisponível.
 
-## 🛠️ Configuração Local
+## Configuração Local
 
 ### Pré-requisitos
 - Node.js 18+
@@ -144,7 +144,7 @@ npx http-server -p 8000
 
 3. Abra `http://localhost:8000` no navegador
 
-## 🔌 Endpoints da API
+## Endpoints da API
 
 ### Saúde
 ```
@@ -188,7 +188,7 @@ Body: FormData com arquivo de áudio
 Resposta: { "text": "Texto transcrito" }
 ```
 
-## 🎨 Interface do Usuário
+## Interface do Usuário
 
 ### Layout Principal
 - **Header**: Logo, descrição e botão de configurações
@@ -208,14 +208,14 @@ Resposta: { "text": "Texto transcrito" }
 - **Tablet**: Seletores reorganizados
 - **Mobile**: Stack vertical, botões maiores para toque
 
-## 🔒 Segurança
+## Segurança
 
 - **Sem Chaves Expostas**: Todas as chaves de API ficam no backend (variáveis de ambiente Vercel)
 - **CORS Configurado**: Frontend pode se comunicar com backend de forma segura
 - **Sanitização de Respostas**: Texto interno da IA é filtrado (remove `<system-reminder>`, metadados)
 - **Validação de Input**: Mensagens são validadas no backend antes do processamento
 
-## 📊 Fluxo de Mensagens
+## Fluxo de Mensagens
 
 ```
 [Usuário digita ou grava áudio]
@@ -237,7 +237,7 @@ Resposta: { "text": "Texto transcrito" }
 [Se TTS ativado, sintetiza áudio]
 ```
 
-## 🧪 Testando Localmente
+## Testando Localmente
 
 1. **Chat Simples**:
    - Digite uma mensagem e clique em "Enviar"
@@ -257,7 +257,7 @@ Resposta: { "text": "Texto transcrito" }
    - Se um modelo falhar, backend tenta outro automaticamente
    - Usuário recebe aviso no chat (em desenvolvimento)
 
-## 📦 Deploy
+## Deploy
 
 ### Backend (Vercel)
 
@@ -276,7 +276,7 @@ Resposta: { "text": "Texto transcrito" }
 
 **Nota**: Atualize `API_URL` em `chat-tutor/scripts/config.js` com a URL do backend Vercel
 
-## 🐛 Troubleshooting
+## Troubleshooting
 
 ### "Erro de Rede" no áudio
 - Verifique se o backend está respondendo em `/health`
@@ -294,23 +294,19 @@ Resposta: { "text": "Texto transcrito" }
 - Verifique que backend tem `CORS_ORIGIN` configurado corretamente
 - Em desenvolvimento: `http://localhost:*`
 
-## 📝 Notas de Desenvolvimento
+## Notas de Desenvolvimento
 
 - **Modelos podem ficar offline**: OpenRouter e Groq decommission modelos ocasionalmente
 - **Rate Limiting**: Groq tem limite de 30 requisições por minuto na tier gratuita
 - **STT Instável**: Alternativamente ao `SpeechRecognition`, usamos Groq Whisper (mais robusto)
 - **TTS Browser**: Qualidade varia por navegador e idioma
 
-## 📄 Licença
+## Licença
 
 Projeto pessoal de portfólio. Livre para usar como referência.
 
-## 👨‍💻 Autor
+## Autor
 
 **Victor Zanin Rubinec**
 - GitHub: [@VictorRubinec](https://github.com/VictorRubinec)
 - Portfólio: [victorrubinec.github.io](https://victorrubinec.github.io/)
-
----
-
-**Desenvolvido com ❤️ como projeto de portfólio**
