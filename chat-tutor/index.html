@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Tutor v2</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%2327c1a5'/%3E%3Cpath d='M18 34c0-8 6-14 14-14h14v8H32c-4 0-6 2-6 6v2h-8v-2z' fill='white'/%3E%3C/svg%3E" type="image/svg+xml">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body onload="chat()">
+    <main class="app-shell">
+        <header class="header">
+            <div class="brand">
+                <h1>Chat Tutor v2</h1>
+                <p>Frontend em GitHub Pages + API em Vercel</p>
+                <p class="brand-meta">Por Victor Zanin Rubinec - <a href="https://victorrubinec.github.io/" target="_blank" rel="noopener noreferrer">Portifolio</a></p>
+            </div>
+
+            <button id="config-toggle" class="icon-btn" type="button" aria-label="Abrir configuracoes">Config</button>
+
+            <section id="config-panel" class="config-panel" aria-label="Painel de configuracoes">
+                <div class="actions-row">
+                    <button id="voice-toggle-btn" class="btn btn-secondary" type="button">Voz: ON</button>
+                    <button id="clear-chat-btn" class="btn btn-secondary" type="button">Limpar chat</button>
+                </div>
+            </section>
+        </header>
+
+        <section id="chat-history" class="chat-div" aria-live="polite">
+            <div id="chat-inner" class="chat-inner"></div>
+        </section>
+
+        <footer class="composer">
+            <textarea id="message-input" class="message-input" placeholder="Digite sua mensagem..."></textarea>
+            <div class="composer-controls">
+                <select id="provider-select" class="composer-select" title="Provedor"></select>
+                <select id="model-select" class="composer-select" title="Modelo"></select>
+                <select id="mode-select" class="composer-select" title="Personalidade">
+                    <option value="direct" selected>Tutor Direto</option>
+                    <option value="socratic">Tutor Socratico</option>
+                </select>
+            </div>
+            <div class="composer-actions">
+                <button id="listen-btn" class="btn btn-secondary" type="button">Escutar</button>
+                <button id="send-btn" class="btn" type="button">Enviar</button>
+            </div>
+        </footer>
+    </main>
+
+    <script src="scripts/config.js"></script>
+    <script src="scripts/modes.js"></script>
+    <script src="scripts/api-client.js"></script>
+    <script src="scripts/voice.js"></script>
+    <script src="scripts/chatbot.js"></script>
+</body>
+</html>

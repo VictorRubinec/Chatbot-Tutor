@@ -1,8 +1,10 @@
-/arquivos
-/node_modules
-```
+node_modules/
+**/node_modules/
 
 .env
-gctts.json
+**/.env
+
 package-lock.json
-```
+
+arquivos/
+gctts.json
